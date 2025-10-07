@@ -22,6 +22,8 @@ from starlette.middleware.sessions import SessionMiddleware
 from authlib.integrations.starlette_client import OAuth
 from dotenv import load_dotenv
 
+from schemas import Token
+
 load_dotenv()
 
 oauth = OAuth()
@@ -197,7 +199,7 @@ async def auth_via_google(request: Request, db: Session = Depends(get_db)):
         data={'sub': db_user.username}
     )
 
-    return {'access_token': access_token, 'token_type': 'bearer'}
+    return Token(access_token=access_token, token_type='bearer')
 
 
 @app.get("/")
